@@ -1,0 +1,252 @@
+<html>
+<head>
+	<title>hello</title>
+	<style type="text/css">
+		html{ height: 100%;width: 100%; }
+		body{
+		 	height: 100%;width: 100%; margin: 0;
+		 	background-color: black;
+			color: white;
+		}
+		div.footer_pane{
+			height: 30px;
+			width:100%;
+			position: absolute;
+			bottom: 0px;
+			/*border-top: 1px solid #ddd;*/
+		}
+		#full_screen{
+			position: absolute;
+			right: 0px;
+			color: black;
+			height: 100%;
+			background-color: black;
+			/*border: 1px solid black;*/
+			border: none;
+			outline:none;
+		}
+		#normal_screen{
+			position: absolute;
+			right: auto;
+			color: black;
+			height: 100%;
+			background-color: black;
+			/*border: 1px solid black;*/
+			border: none;
+			outline:none;
+		}
+		#full_screen:hover {
+			position: absolute;
+			right: 0px;
+			color: white;
+			height: 100%;
+			background-color: black;
+			border: 1px solid lightblue;
+			/*border-top: none;*/
+			/*outline:none;*/
+		}
+		#normal_screen:hover {
+			position: absolute;
+			right: auto;
+			color: white;
+			height: 100%;
+			background-color: black;
+			border: 1px solid lightblue;
+			/*border-top: none;*/
+			/*outline:none;*/
+		}
+		/* 天气*/
+		.order{
+			display: none!important;
+		}
+		.header-pane .one_line{
+			width:20%;
+			display: inline-block;
+		}
+	</style>
+</head>
+<body>
+	<div class="header-pane">
+		<div id="weather" style="min-height: 65px;">
+			<!-- <iframe width="420" scrolling="no" height="60" frameborder="0" allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=12&color=%23FFFFFF&icon=1&num=5"></iframe> -->
+		</div>
+		<div class="one_line" style="background: #3f2860;">25</div>
+		<div class="one_line" style="margin-left: -8px;background: #90c5a9;">25</div>
+		<div class="one_line" style="margin-left: -8px;background: #7a9a95;">25</div>
+		<div class="one_line" style="margin-left: -8px;background: #ef6d3b;">25</div>
+		<div class="one_line" style="margin-left: -8px;background: #fa8b60;">25</div>
+	</div>
+	<div class="asdf" style="width: 100%;height: 20%;">
+		<center style="font-size: 5em;">
+		<div  style="width: 100%;height: 30%;">	</div>
+		<div id="time" style="width: 100%;height: 40%;"></div>
+		<div id="message" style="width: 100%;height: 30%;"></div>
+		</center>
+	</div>
+
+	<div class="footer_pane">
+		<input style="" type="color" id="color" />
+    <button id="btn">弹出色盘</button>	
+		<!-- <audio controls="controls" autoplay=""> -->
+			<!-- <source src="/assets/123456.wav" type="audio/wav"> -->
+		<!-- </audio> -->
+		<button id="full_screen">full_screen</button>
+		<button id="normal_screen">normal_screen</button>
+	</div>
+
+<div class="modal fade" id="color_manager" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <p>One fine body&hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<script type="text/javascript">
+window.onload=function(){
+	document.getElementById('btn').onclick = function(){
+	    document.getElementById('color').click();
+	};
+	function get_time(){
+		setInterval(function(){
+			var target = document.getElementById('time')
+			var date = new Date;
+			var day_month = date.getDate();//一个月中的某一天（1~31）
+			var day_week = date.getDay();//一个周中的某一天(0~6)
+			var month = date.getMonth();//月份(0~11)
+			var year = date.getFullYear();//年份
+			var hours = date.getHours();//(0~23)
+			var minutes = date.getMinutes();//分钟(0~59)
+			var seconds = date.getSeconds();//秒数(0~59)
+			var milliseconds = date.getMilliseconds();//毫秒(0~999)
+			var milliseconds_original = date.getTime();//返回1970.1.1至今的毫秒数
+			var offset = date.getTimezoneOffset();//本地时间与格林威治标准时间(GMT)的分钟差。
+			var day_month_utc = date.getUTCDate();//根据世界时从 Date 对象返回月中的一天 (1 ~ 31)。
+			var day_week_utc = date.getUTCDay();//返回周中的一天 (0 ~ 6)。
+			var month_utc = date.getUTCMonth();//返回月份 (0 ~ 11)。
+			target.innerText = (month+1)+"月"+day_month+"日 "+match_week(day_week)+"\n"+
+						hours+":"+match_single(minutes)+":"+match_single(seconds)//+"."+milliseconds;
+		},1000)
+	}
+	get_time();
+
+	setInterval(function(){
+		update_weather();
+	},1800000)
+	function update_weather(){
+		document.getElementById('weather').innerHTML="<iframe width='420' scrolling='no' height='60' frameborder='0' allowtransparency='true' src='http://i.tianqi.com/index.php?c=code&id=12&color=%23FFFFFF&icon=1&num=5'></iframe>"
+	}
+	update_weather();
+	
+	var full_screen = document.getElementById('full_screen')
+	var normal_screen = document.getElementById('normal_screen')
+	full_screen.onclick=function(){
+		// var docElm = document.documentElement;
+		//W3C 
+		// if (docElm.requestFullscreen){ 
+		//   docElm.requestFullscreen(); 
+		// }
+		//FireFox 
+		// else if (docElm.mozRequestFullScreen){ 
+		//   docElm.mozRequestFullScreen(); 
+		// }
+		//Chrome等 
+		// else if (docElm.webkitRequestFullScreen) { 
+		//   docElm.webkitRequestFullScreen(); 
+		// }
+		//IE11
+		// else if (elem.msRequestFullscreen) {
+		//  elem.msRequestFullscreen();
+		// }
+		// full_screen.setAttribute("style","display:none")
+		// document.activeElement.blur()
+
+		// 判断各种浏览器，找到正确的方法
+		var element = document.documentElement;
+		var requestMethod = element.requestFullScreen || //W3C
+		element.webkitRequestFullScreen ||  //Chrome等
+		element.mozRequestFullScreen || //FireFox
+		element.msRequestFullScreen; //IE11
+		if (requestMethod) {
+		  requestMethod.call(element);
+		}
+		else if (typeof window.ActiveXObject !== "undefined") {//for Internet Explorer
+		  var wscript = new ActiveXObject("WScript.Shell");
+		  if (wscript !== null) {
+		    wscript.SendKeys("{F11}");
+		  }
+		}
+	}
+	normal_screen.onclick=function(){
+	  // 判断各种浏览器，找到正确的方法
+	  var exitMethod = document.exitFullscreen || //W3C
+	  document.mozCancelFullScreen ||  //Chrome等
+	  document.webkitExitFullscreen || //FireFox
+	  document.webkitExitFullscreen; //IE11
+	  if (exitMethod) {
+	    exitMethod.call(document);
+	  }
+	  else if (typeof window.ActiveXObject !== "undefined") {//for Internet Explorer
+	    var wscript = new ActiveXObject("WScript.Shell");
+	    if (wscript !== null) {
+	      wscript.SendKeys("{F11}");
+	    }
+	  }
+	}
+
+	function match_single(num){
+		var temp_num = num;
+		if (temp_num<10) {
+			temp_num = "0"+temp_num;
+		}
+		return temp_num;
+	}
+	function match_week(day_week){
+		switch(day_week){
+		case 0:
+			return "星期日"
+			// break;
+		case 1:
+			return "星期一"
+			// break;
+		case 2:
+			return "星期二"
+			// break;
+		case 3:
+			return "星期三"
+			// break;
+		case 4:
+			return "星期四"
+			// break;
+		case 5:
+			return "星期五"
+			// break;
+		case 6:
+			return "星期六"
+			// break;																	
+		}
+	}
+}
+</script>
+<script type="text/javascript">
+	$(function(){
+		$("input[type='color']").change(function(){
+			// alert(this.value)
+			// $("body").css({"background-color":this.value})
+			$("#color_manager").modal("show")
+		})
+	})
+</script>
+</body>
+</html>

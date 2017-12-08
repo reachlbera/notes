@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Notes</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/pretty.ico">
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'bootstrap/bootstrap','bootstrap/bootstrap.min'%>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  </head>
+
+  <body>
+    <%= yield %>
+  </body>
+</html>
