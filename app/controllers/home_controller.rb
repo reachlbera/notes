@@ -1,10 +1,11 @@
 #encoding: utf-8
 class HomeController < ApplicationController
-	# before_filter :authenticate_user!
+	before_action :authenticate_user!
 	# before_filter :get_user
 	def index
 		p "index"
 		p params
+		@users = User.all
 		# @messages = Test.all
 	end
 
@@ -16,6 +17,7 @@ class HomeController < ApplicationController
 	def show
 		p "show"
 		p params
+		@user = User.find(params[:id])
 	end
 
 	def create
