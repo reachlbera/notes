@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :users#, :skip => [:sessions], class_name: "User", :controllers => { :sessions => "devise/sessions",:registrations =>"devise/registrations"}
+  devise_for :users, class_name: "User", :controllers => { :sessions => "user/sessions",:registrations =>"user/registrations"}
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  # root "home#welcome"
-  root :to => "home#index"
+  root :to => "home#welcome"
+  # root :to => "home#index"
   resources :home do 
   	collection do
   		get :welcome

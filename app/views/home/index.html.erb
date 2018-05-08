@@ -1,1 +1,11 @@
 skadjglaksjdlkg
+<%= current_user.login%>
+
+    <div class="form-group insurance_stint" style="display: none;">
+      <label class="string optional control-label col-sm-3" for="insurance_stint_description">医保限制描述</label>
+      <div class="controls col-sm-5">
+        <div class="input-unit">
+          <input class="form-control" type="text" name="erp_item_drug[stint_description]" id="insurance_stint_description" placeholder="医保限制描述" value="<%= @erp_item_drug.stint_description%>">
+        </div>
+      </div>
+    </div>

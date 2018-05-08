@@ -5,7 +5,7 @@ class HomeController < ApplicationController
 	def index
 		p "index"
 		p params
-		@users = User.all
+		# @users = User.all
 		# @messages = Test.all
 	end
 

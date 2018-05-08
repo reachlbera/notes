@@ -1,7 +1,7 @@
 #encoding: utf-8
-require 'devise/strategies/database_authenticatable'
+# require 'devise/strategies/database_authenticatable'
 # require 'database_authenticatable'
-require 'ostruct'
+# require 'ostruct'
 
 class User
 	include Mongoid::Document
@@ -13,7 +13,38 @@ devise :database_authenticatable, :registerable, :lockable,
   field :login,                   type: String
   field :email,                  type: String
   field :username,                   type: String	
-  field :encrypted_password,                   type: String	
+
+  ## Database authenticatable
+  field :email,                   type: String
+  field :encrypted_password,      type: String
+
+  ## Recoverable
+  field :reset_password_token,    type: String
+  field :reset_password_sent_at,  type: Time
+
+  ## Rememberable
+  field :remember_created_at,     type: Time
+
+  ## Trackable
+  field :sign_in_count,           type: Integer, default: 0
+  field :current_sign_in_at,      type: Time
+  field :last_sign_in_at,         type: Time
+  field :current_sign_in_ip,      type: String
+  field :last_sign_in_ip,         type: String
+
+  ## Confirmable
+  # field :confirmation_token,   type: String
+  # field :confirmed_at,         type: Time
+  # field :confirmation_sent_at, type: Time
+  # field :unconfirmed_email,    type: String # Only if using reconfirmable
+
+  ## Lockable
+  field :failed_attempts,        type: Integer, default: 0 # Only if lock strategy is :failed_attempts
+  field :unlock_token,           type: String # Only if unlock strategy is :email or :both
+  field :ims_location_id,        type: String # Only if unlock strategy is :email or :both
+  field :ims_location_name,      type: String # Only if unlock strategy is :email or :both
+  field :locked_at,              type: Time
+
 
   validates_presence_of       :login 
   validates_uniqueness_of     :login
@@ -27,4 +58,5 @@ devise :database_authenticatable, :registerable, :lockable,
 	def will_save_change_to_email?
 	  false
 	end
+
 end
