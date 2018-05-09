@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   devise_for :users, class_name: "User", :controllers => { :sessions => "user/sessions",:registrations =>"user/registrations"}
+  # devise_for :users do
+  #   get '/users/sign_out' => 'devise/sessions#destroy'
+  # end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root :to => "home#welcome"
   # root :to => "home#index"

@@ -1,6 +1,8 @@
 #encoding: utf-8
 class HomeController < ApplicationController
-	before_action :authenticate_user!
+	before_action :authenticate_user!, only: [:index,:edit,:show,:create,:update]
+	# before_action :get_user only: [:index,:edit,:show,:create,:update]
+	layout "home"
 	# before_filter :get_user
 	def index
 		p "index"
@@ -121,4 +123,9 @@ class HomeController < ApplicationController
 		# document_id = params[:document_id]
 		# AsyncBroadcastJob.perform_later document_id:document_id
 	end
+
+	private
+		# def get_user
+		# 	:authenticate_user!
+		# end
 end

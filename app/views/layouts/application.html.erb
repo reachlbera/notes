@@ -4,14 +4,14 @@
     <title>Notes</title>
     <%= csrf_meta_tags %>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= stylesheet_link_tag    'base','fontawesome/font-awesome.min','bootstrap-3.3.7/bootstrap.min' %>
+    <%= stylesheet_link_tag    'base','fontawesome/font-awesome.min','bootstrap-3.3.7/bootstrap-theme.min','bootstrap-3.3.7/bootstrap.min' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'plugins/vue.min' %>
+    <%= javascript_include_tag 'jquery.min','plugins/vue.min','bootstrap/bootstrap.min' %>
   </head>
 
   <body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>  	
+    <% if notice %> <p class="notice"><%= notice %></p><% end %>
+    <% if alert %> <p class="alert"><%= alert %></p> <% end %> 	
     <%= yield %>
   </body>
 </html>

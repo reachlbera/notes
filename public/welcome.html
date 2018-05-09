@@ -1,9 +1,76 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Welcome</title>
-</head>
-<body>
-	<div class="main-data">Welcome</div>
-</body>
-</html>
+<style type="text/css">
+html{width: 100%; height:100%}
+	body{
+		background-image:url('/assets/background/bg_img1.webp');
+		position:fixed;
+	  top: 0;
+	  left: 0;
+	  width:100%;
+	  height:100%;
+	  min-width: 1000px;
+	  z-index:-10;
+	  zoom: 1;
+	  background-color: #fff;
+	  background-repeat: no-repeat;
+	  background-size: cover;
+	  -webkit-background-size: cover;
+	  -o-background-size: cover;
+	  background-position: center 0;		
+	}
+</style>
+<div class="main-data">
+	<div class="" style="position:absolute; top:0px; width:100%; height: 25px; background: linear-gradient(rgb(210, 210, 210), #A3A1A1);">
+		<a class="" href="#">&nbsp; Home</a>
+		<div class="" style="float:right;" data-toggle="modal" data-target="#current_user_modal"><%= current_user.login if current_user%><i class="fa fa-user-circle-o fa-fw"></i></div>
+	</div>
+</div>
+<% if current_user %>
+<%= current_user.methods%>
+<div id="current_user_modal" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">当前用户</h4>
+      </div>
+      <div class="modal-body">
+        	<div>用户名：<%= current_user.login%></div>
+        	<div>邮  箱：<%= current_user.email%></div>
+        	<a href="current_user"></a>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<% else %>
+<div id="current_user_modal" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">用户登录</h4>
+      </div>
+      <div class="modal-body">
+        <div class="col-sm-12">
+        	<label class="col-sm-3">用户名：</label>
+        	<div class="col-sm-9">
+        		<input type="input" name="user[login]">
+        	</div>
+	      </div>
+        <div class="col-sm-12">
+        	<label class="col-sm-3">密码：</label>
+        	<div class="col-sm-9">
+        		<input type="password" name="user[password]">
+        	</div>
+	      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>
