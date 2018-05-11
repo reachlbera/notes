@@ -67,6 +67,7 @@ html{width: 100%; height:100%}
   </div>
 </div>
 <% else %>
+<form class="new_user" id="new_user" action="/users/sign_in" accept-charset="UTF-8" method="post">
 <div id="current_user_modal" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
@@ -90,7 +91,6 @@ html{width: 100%; height:100%}
 	        	</div>
 		      </div>
       	</form> -->
-				<form class="new_user" id="new_user" action="/users/sign_in" accept-charset="UTF-8" method="post">
 					<input name="utf8" type="hidden" value="✓">
 					<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token%>">
 				  <div class="field">
@@ -107,19 +107,17 @@ html{width: 100%; height:100%}
 				      <input name="user[remember_me]" type="hidden" value="0"><input type="checkbox" value="1" name="user[remember_me]" id="user_remember_me">
 				      <label for="user_remember_me">Remember me</label>
 				    </div>
-
-				  <div class="actions">
-				    <input type="submit" name="commit" value="Log in" data-disable-with="Log in">
-				  </div>
-				</form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+				  <input type="submit" name="commit" value="Log in" data-disable-with="Log in">
+        	<%= link_to('注册', new_registration_path(:user)) %>
       </div>
     </div>
   </div>
 </div>
+</form>
 <% end %>
 
 <script type="text/javascript">

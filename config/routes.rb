@@ -11,7 +11,18 @@ Rails.application.routes.draw do
   		get :welcome
   	end
   end
+  resources :users do 
+    collection do
+    end
+  end
 
+  namespace :note do 
+    resources :journals do 
+      collection do
+        get :document
+      end
+    end
+  end
 
 # devise_for :users, :skip => [:sessions]
   # as :user do

@@ -1,0 +1,22 @@
+<div class="main-data">
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>login</th>
+				<th>email</th>
+				<th>username</th>
+				<th>status</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @users.each do |user| %>
+			<tr>
+				<td><%= user.login%></td>
+				<td><%= user.email%></td>
+				<td><%= user.username%></td>
+				<td><%= user.status%></td>
+			</tr>
+			<% end %>
+		</tbody>
+	</table>
+</div>

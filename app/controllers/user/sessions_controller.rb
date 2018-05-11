@@ -4,8 +4,8 @@ class User::SessionsController < Devise::SessionsController
 
   def create
     p params
-    auth_options = { :recall => 'home#index', :scope => :user }
-    resource = warden.authenticate!(auth_options)
+    # auth_options = { :recall => 'home#index', :scope => :user }
+    # resource = warden.authenticate!(auth_options)
     super
     #resource.set_permissions
   end

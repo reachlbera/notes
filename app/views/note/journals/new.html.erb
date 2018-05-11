@@ -1,0 +1,19 @@
+<%= form_for(@journal, html: { method: :post }) do |f| %>
+
+   <%= f.hidden_field :user_id,value: current_user.id %>
+
+  <div class="field">
+    <%= f.label :title %><br />
+    <%= f.text_field :title, autofocus: true, autocomplete: false %>
+  </div>
+
+  <div class="field">
+    <%= f.label :article %><br />
+    <%#= f.text_field :article %>
+    <iframe src="/note/journals/document" width="100%"></iframe>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "submit" %>
+  </div>
+<% end %>

@@ -12,7 +12,8 @@ devise :database_authenticatable, :registerable, :lockable,
 
   field :login,                   type: String
   field :email,                  type: String
-  field :username,                   type: String	
+  field :username,                   type: String 
+  field :status,                   type: String,default:"N"	
 
   ## Database authenticatable
   field :email,                   type: String
@@ -59,4 +60,17 @@ devise :database_authenticatable, :registerable, :lockable,
 	  false
 	end
 
+  def is_admin?
+    login.to_s=='admin'
+  end
+
+  def is_manager?
+    is_sys_admin?||false
+  end
+
+
+  def init_password
+    self.update_attributes(:password=> DEFAULT_PASSWORD )
+  end
+  
 end
