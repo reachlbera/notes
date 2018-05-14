@@ -7,6 +7,7 @@ class Note::Journal
 	include Mongoid::Document
 
   field :user_id,                  type: String
+  field :user_name,                  type: String
   field :title,                  type: String
   field :article,                   type: String 
   field :status,                   type: String

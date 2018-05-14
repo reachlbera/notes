@@ -6,6 +6,7 @@ class Note::JournalsController < ApplicationController
 
 	def index
 		p "sdf"
+		@journals = Note::Journal.all
 	end
 
 	def new
@@ -19,9 +20,19 @@ class Note::JournalsController < ApplicationController
 	end
 
 	def create
+		p params
+		params.permit! 
+		@journal = Note::Journal.new(params[:note_journal])
+		if @journal.save
+			redirect_to note_journals_path,:notice => '保存成功.'
+		else
+			redirect_to note_journals_path,:notice => '保存失败.'
+		end
+
 	end
 
 	def update
+		p params
 	end
 
 	private
