@@ -1,0 +1,122 @@
+<%= javascript_include_tag 'plugins/lodash' %>
+<div class="">
+	<label>rails 单复数形式：</label>
+	<div>"post".pluralize #返回posts   &nbsp;&nbsp; &nbsp; "posts".singularize #返回post </div>
+	<div id="app">
+	  {{ message }}
+	</div>
+
+	<table class="table table-hover autocompute">
+		<thead>
+			<tr>
+				<th>物品</th>
+				<th>数量</th>
+				<th>单价</th>
+				<th class="text-right">金额</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr v-for="item in lines">
+				<td>{{item.name}}</td>
+				<td>{{item.qty}}</td>
+				<td><input type="" name="" v-bind:value="item.price"></td>
+				<td class="text-right">{{compute_amount(item)}}</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="text-align: right;">总金额：{{amount}}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div id="watch-example">
+	  <p>
+	    Ask a yes/no question:
+	    <input v-model="question">
+	  </p>
+	  <p>{{ answer }}</p>
+	</div>
+
+
+</div>
+
+<script type="text/javascript">
+var app = new Vue({
+  el: '#app',
+  data: {
+    message: 'Hello Vue!'
+  }
+})
+
+var autocompute = new Vue({
+	el:".autocompute",
+	data: {
+		lines:[{name:"one",qty:"2",price:"12.1"},{name:"tow",qty:"3",price:"5.8"}]
+	},
+	methods:{
+		format_price:function(data){
+			if (data) {
+				return Number(data)==NaN ? 0.00 : parseFloat(data).toFixed(2)
+			}else{
+				return ""
+			}
+		},
+		compute_amount:function(data){
+			return (parseFloat(data.qty)*parseFloat(data.price)).toFixed(2)
+		}
+	},
+	computed:{
+		amount:function(){
+			var amount = 0.0
+			lines = this.lines
+			$.each(lines,function(){
+				amount += (parseFloat(this.qty)*parseFloat(this.price))
+			})
+			amount = amount.toFixed(2)
+			return amount
+		}
+	}
+})
+
+
+var watchExampleVM = new Vue({
+  el: '#watch-example',
+  data: {
+    question: '',
+    answer: 'I cannot give you an answer until you ask a question!'
+  },
+  watch: {
+    // 如果 `question` 发生改变，这个函数就会运行
+    question: function (newQuestion, oldQuestion) {
+      this.answer = 'Waiting for you to stop typing...'
+      this.getAnswer()
+    }
+  },
+  methods: {
+    // `_.debounce` 是一个通过 Lodash 限制操作频率的函数。
+    // 在这个例子中，我们希望限制访问 yesno.wtf/api 的频率
+    // AJAX 请求直到用户输入完毕才会发出。想要了解更多关于
+    // `_.debounce` 函数 (及其近亲 `_.throttle`) 的知识，
+    // 请参考：https://lodash.com/docs#debounce
+    getAnswer: _.debounce(
+      function () {
+        if (this.question.indexOf('?') === -1) {
+          this.answer = 'Questions usually contain a question mark. ;-)'
+          return
+        }
+        this.answer = 'Thinking...'
+        var vm = this
+        axios.get('/study/api')
+          .then(function (response) {
+            vm.answer = _.capitalize(response.data.answer)
+          })
+          .catch(function (error) {
+            vm.answer = 'Error! Could not reach the API. ' + error
+          })
+      },
+      // 这是我们为判定用户停止输入等待的毫秒数
+      500
+    )
+  }
+})
+
+</script>	

@@ -3842,7 +3842,6 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
          */
         createAddress : function(ignoreEnd,ignoreTxt){
             var addr = {},me = this;
-
             function getAddress(isStart){
                 var node = isStart ? me.startContainer : me.endContainer;
                 var parents = domUtils.findParents(node,true,function(node){return !domUtils.isBody(node)}),
@@ -24841,36 +24840,6 @@ UE.ui = baidu.editor.ui = {};
         })(p, typeset[p])
     }
 
-    //字体颜色和背景颜色
-    for (var i = 0, ci; ci = ['backcolor', 'forecolor'][i++];) {
-        editorui[ci] = function (cmd) {
-            return function (editor) {
-                var ui = new editorui.ColorButton({
-                    className:'edui-for-' + cmd,
-                    color:'default',
-                    title:editor.options.labelMap[cmd] || editor.getLang("labelMap." + cmd) || '',
-                    editor:editor,
-                    onpickcolor:function (t, color) {
-                        editor.execCommand(cmd, color);
-                    },
-                    onpicknocolor:function () {
-                        editor.execCommand(cmd, 'default');
-                        this.setColor('transparent');
-                        this.color = 'default';
-                    },
-                    onbuttonclick:function () {
-                        editor.execCommand(cmd, this.color);
-                    }
-                });
-                editorui.buttons[cmd] = ui;
-                editor.addListener('selectionchange', function () {
-                    ui.setDisabled(editor.queryCommandState(cmd) == -1);
-                });
-                return ui;
-            };
-        }(ci);
-    }
-
 
     var dialogBtns = {
         noOk:['searchreplace', 'help', 'spechars', 'webapp','preview'],
@@ -25026,7 +24995,6 @@ UE.ui = baidu.editor.ui = {};
     editorui.insertcode = function (editor, list, title) {
         list = editor.options['insertcode'] || [];
         title = editor.options.labelMap['insertcode'] || editor.getLang("labelMap.insertcode") || '';
-       // if (!list.length) return;
         var items = [];
         utils.each(list,function(key,val){
             items.push({
@@ -25058,7 +25026,6 @@ UE.ui = baidu.editor.ui = {};
                             return i;
                     }
                 }
-
                 return -1;
             }
         });
@@ -25312,6 +25279,7 @@ UE.ui = baidu.editor.ui = {};
         });
         return ui;
     };
+    
     editorui.inserttable = function (editor, iframeUrl, title) {
         title = editor.options.labelMap['inserttable'] || editor.getLang("labelMap.inserttable") || '';
         var ui = new editorui.TableButton({

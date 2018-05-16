@@ -16,6 +16,13 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :study do 
+    collection do
+      get :vue
+      get :api
+    end
+  end  
+
   namespace :note do 
     resources :journals do 
       collection do
