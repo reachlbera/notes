@@ -1,4 +1,5 @@
-<%= javascript_include_tag 'plugins/lodash' %>
+<%= stylesheet_link_tag   'plugins/easytable' %>
+<%= javascript_include_tag 'plugins/lodash', 'plugins/axios','plugins/easytable' %>
 <div class="">
 	<label>rails 单复数形式：</label>
 	<div>"post".pluralize #返回posts   &nbsp;&nbsp; &nbsp; "posts".singularize #返回post </div>
@@ -18,7 +19,7 @@
 		<tbody>
 			<tr v-for="item in lines">
 				<td>{{item.name}}</td>
-				<td>{{item.qty}}</td>
+				<td isEdit:true>{{item.qty}}</td>
 				<td><input type="" name="" v-bind:value="item.price"></td>
 				<td class="text-right">{{compute_amount(item)}}</td>
 			</tr>
@@ -36,10 +37,14 @@
 	  <p>{{ answer }}</p>
 	</div>
 
+	<div id="hook-arguments-example" v-demo:foo.a.b="message"></div>
+
 
 </div>
 
 <script type="text/javascript">
+	// Vue.component(VTable.name, VTable)
+// Vue.component(VPagination.name, VPagination)
 var app = new Vue({
   el: '#app',
   data: {
@@ -74,7 +79,13 @@ var autocompute = new Vue({
 			amount = amount.toFixed(2)
 			return amount
 		}
-	}
+	},
+	// directives：{
+	//   inserted:function(el , binding){
+	//   //通过这个SET方法，传个参数，去改变值
+	//     binding.value.SET(1);
+	//   }
+	// }
 })
 
 
@@ -105,7 +116,7 @@ var watchExampleVM = new Vue({
         }
         this.answer = 'Thinking...'
         var vm = this
-        axios.get('/study/api')
+        axios.get('/study/api',{params:{question:this.question}})
           .then(function (response) {
             vm.answer = _.capitalize(response.data.answer)
           })
@@ -119,4 +130,23 @@ var watchExampleVM = new Vue({
   }
 })
 
+Vue.directive('demo', {
+  bind: function (el, binding, vnode) {
+    var s = JSON.stringify
+    el.innerHTML =
+      'name: '       + s(binding.name) + '<br>' +
+      'value: '      + s(binding.value) + '<br>' +
+      'expression: ' + s(binding.expression) + '<br>' +
+      'argument: '   + s(binding.arg) + '<br>' +
+      'modifiers: '  + s(binding.modifiers) + '<br>' +
+      'vnode keys: ' + Object.keys(vnode).join(', ')
+  }
+})
+
+new Vue({
+  el: '#hook-arguments-example',
+  data: {
+    message: 'hello!'
+  }
+})
 </script>	

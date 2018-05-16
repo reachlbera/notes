@@ -24,7 +24,8 @@ class StudyController < ApplicationController
 	end
 
 	def api
-		render json:{we:23}
+		p params
+		render json:{answer:234,we:23}
 	end
 	private
 		# def get_user
