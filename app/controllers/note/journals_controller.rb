@@ -1,7 +1,7 @@
 #encoding: utf-8
 class Note::JournalsController < ApplicationController
 	# before_action :authenticate_user!, only: [:index,:edit,:show,:create,:update]
-	# before_action :get_user only: [:index,:edit,:show,:create,:update]
+	before_action :get_journal, only: [:show,:edit]
 	# layout "journal"
 
 	def index
@@ -36,5 +36,8 @@ class Note::JournalsController < ApplicationController
 	end
 
 	private
+		def get_journal
+			@journal = Note::Journal.find(params[:id])
+		end
 
 end
