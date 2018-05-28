@@ -1,0 +1,95 @@
+<style type="text/css">
+body{
+	/*color: white;*/
+	background-color: rgb(0,0,0);color: white;
+}
+</style>
+<div class="main-data" style="padding-top:12px;">
+	<% if notice %>
+		<div style="background-color:lightpink"><%= notice%></div>
+	<% end %>
+	<form action="/home" method="post" enctype="multipart/form-data">
+		<!-- <input name='authenticity_token' value="<%= form_authenticity_token%>"> -->
+		<!-- <label class="col-sm-2">upload</label> -->
+		<!-- <div class="col-sm-4"> -->
+			<input class="hidden" id="file_input" type="file" name="upload_file">
+			<input class="filename" type="text" name="filename">
+		<!-- </div> -->
+		<!-- <button type="submit" class="btn btn-danger">Submit</button> -->
+	</form>
+
+	<% if @file_array %>
+		<% @file_array.each do |file| %>
+		 <div class="col-sm-12" style="" id="<%= file.id%>">
+			 	<div class="col-sm-3">
+			 		<%#= file.filename%>
+		      <% if file.filename != nil %>
+		        <!-- <img src="/files/get?id=<%=file.id%>" class="img-thumbnail picture-size" Content-Type="image/png" alt=""> -->
+		        <!-- <img src="/assets/hot.jpg" class="img-thumbnail picture-size" alt=""> -->
+		        <%= image_tag "/assets/#{file.content_type}/#{file.disk_filename}", :size => "50x50"%>
+		        <%= file.filename%>
+		      <% else %>
+		        <img src="" class="img-thumbnail picture-size" alt="">
+		      <% end %>			 		
+			 	</div>
+			 	<div class="col-sm-3"><%= file.filesize%></div>
+			 	<div class="col-sm-3"><%= file.created_at%></div>
+			 	<div class="col-sm-3"><%= file.updated_at%></div>
+		 </div>
+		<% end %>
+	<% end %>
+<% if @file_url %>
+	<% if @file_url[:img_url] %>
+			<!-- <img src="<%#= @file_url[:img_url]%>"> -->
+		<% elsif @file_url[:text_url] %>
+			<div >文件：</div>
+	<% end %>
+<% end %>
+</div>
+
+<script type="text/javascript">
+var a = [
+"255,255,255",
+"255,255,255",
+"51,51,51",
+"85,85,85",
+"0,0,0",
+"0,255,0",
+"77,77,77",
+"85,85,85",
+"187,0, 0",
+"255,85,85",
+"152,251,152",
+"85,255,85",
+"240,230,140",
+"255,255,85",
+"205,133,63",
+"135,206,235",
+"255,222,173",
+"255,85,255",
+"255,160,160",
+"255,215,0",
+"245,222,179",
+"255,255,255",
+]
+// for (var i = a.length - 1; i >= 0; i--) {
+// 	var str = "<div class='' style='";
+// 	str += "width:25%;background-color:rgb("+a[i]+");'>";
+// 	str += a[i]+"</div>";
+// 	$(".main-data").append(str);
+// };
+// var file_input = document.getElementsByTagName('div')
+var file_name_input = document.getElementsByClassName('filename')[0]
+var file_upload_input = document.getElementById('file_input')
+file_name_input.onclick=function(){
+	file_upload_input.click();
+}
+file_upload_input.onchange = function(){
+	console.log(this.value)
+	var str = this.value;
+	if (str.split("\\").length>1) {
+		var name = str.split("\\")[str.split("\\").length-1];
+		file_name_input.value = name;
+	};
+}
+</script>

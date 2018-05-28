@@ -1,0 +1,166 @@
+<%= render "/update" %>
+<style type="text/css">
+body{
+	/*color: white;*/
+	/*background-color: rgb(0,0,0);*/
+}
+.white{
+	color: white;
+}
+.input-custom{
+  background-color: #fff;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  padding: 4px 7px;
+  /*box-shadow:0 0 7px 1px #06c;*/
+}
+.input-custom:focus{
+  /*background-color: #fff;*/
+  /*border: 1px solid #cccccc;*/
+  /*border: 1px solid #66afe9;*/
+  /*border-radius: 4px;*/
+  /*padding: 4px 7px;*/
+  /*box-shadow:0 0 7px -1px #06c!important;*/
+  /*box-shadow:0 1px 4px rgba(0,0,0,0.3);*/
+  /*box-shadow:inset 0 1px 1px rgba(0,0,0,.075);*/
+}
+</style>
+<div class="main-data" style="">
+  <nav class="navbar navbar-inverse">
+    <input data-behavior="update_speaker" class="form-control" style="display:inline-block;height:28px;width:220px;margin-top:8px;">
+    <button type="button" class="btn btn-default" id="upload_file_btn" style="font-size:20px;float:right;padding:3px 8px;">&#10048</button>
+  </nav>
+
+	<form action="/pictures" method="post" enctype="multipart/form-data">
+		<input class="hidden" name='authenticity_token' value="<%= form_authenticity_token%>" style="float:right;">
+		<div class="picture-data-info" style="/*display:table;*/">
+
+		</div>
+		<button type="submit" class="btn btn-danger"style="position:fixed;bottom:0px;right:0px;">Submit</button>
+	</form>
+
+<div class="hidden picture_template">
+	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4" id="template" style="margin-bottom:12px;">
+	<div class="form-group">
+		<div class="col-xs-5" style="min-width:180px;">
+			<img src="" style="width:180px;height:180px;">
+		</div>
+		<div class="col-xs-7">
+			<div class="form-group">
+				<label>文件名：</label>
+				<input class="input-custom" name="file[][filename]" id="filename">
+				<input name="file[][file]" type="file" class="hidden">
+			</div>
+			<div class="form-group">
+				<label>文件size：</label>
+				<span id="filesize"></span>
+			</div>
+      <div class="form-group">
+        <label>分类：</label>
+        <select class="input-custom" name="file[][status]">
+          <option value=""></option>
+          <option value="hot">热门</option>
+          <option value="sale">促销</option>
+        </select>
+      </div>      
+      <div class="form-group">
+        <label>分类：</label>
+        <input class="input-custom" name="file[][price]">
+      </div>
+      <div class="form-group">
+        <textarea class="input-custom" name="file[][descriptions]"></textarea>
+      </div>
+		</div>
+	</div>
+	</div>
+</div>
+<script type="text/javascript">
+/*
+*参数说明: Img:图片ID;Width:预览宽度;Height:预览高度;ImgType:支持文件类型;Callback:选择文件显示图片后回调方法;
+*使用方法: 
+<div>
+<img id="ImgPr" width="120" height="120" /></div>
+<input type="file" id="up" />
+把需要进行预览的IMG标签外 套一个DIV 然后给上传控件ID给予uploadPreview事件
+$("#up").uploadPreview({ Img: "ImgPr", Width: 120, Height: 120, ImgType: ["gif", "jpeg", "jpg", "bmp", "png"], Callback: function () { }});
+*/
+jQuery.fn.extend({
+    uploadPreview: function (opts) {
+        var _self = this,
+            _this = $(this);
+        opts = jQuery.extend({
+            Img: "ImgPr",
+            Width: 100,
+            Height: 100,
+            ImgType: ["gif", "jpeg", "jpg", "bmp", "png"],
+            Callback: function () {}
+        }, opts || {});
+        _self.getObjectURL = function (file) {
+            var url = null;
+            if (window.createObjectURL != undefined) {
+                url = window.createObjectURL(file)
+            } else if (window.URL != undefined) {
+                url = window.URL.createObjectURL(file)
+            } else if (window.webkitURL != undefined) {
+                url = window.webkitURL.createObjectURL(file)
+            }
+            return url
+        };
+        _this.change(function () {
+            if (this.value) {
+                if (!RegExp("\.(" + opts.ImgType.join("|") + ")$", "i").test(this.value.toLowerCase())) {
+                    alert("选择文件错误,图片类型必须是" + opts.ImgType.join("，") + "中的一种");
+                    this.value = "";
+                    return false
+                }
+                if ($.browser.msie) {
+                    try {
+                        $("#" + opts.Img).attr('src', _self.getObjectURL(this.files[0]))
+                    } catch (e) {
+                        var src = "";
+                        var obj = $("#" + opts.Img);
+                        var div = obj.parent("div")[0];
+                        _self.select();
+                        if (top != self) {
+                            window.parent.document.body.focus()
+                        } else {
+                            _self.blur()
+                        }
+                        src = document.selection.createRange().text;
+                        document.selection.empty();
+                        obj.hide();
+                        obj.parent("div").css({
+                            'filter': 'progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)',
+                            'width': opts.Width + 'px',
+                            'height': opts.Height + 'px'
+                        });
+                        div.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = src
+                    }
+                } else {
+                    $("#" + opts.Img).attr('src', _self.getObjectURL(this.files[0]))
+                }
+                opts.Callback()
+            }
+        })
+    }
+});
+</script>
+
+<script type="text/javascript">
+$("#upload_file_btn").click(function(){
+	var template = $(".picture_template #template").clone();
+  var a = $(template).find("input[type='file']")
+  a.click();
+  $(".picture-data-info").append(template)
+})
+$(document).on("change", "input[type='file']",function(){
+	console.log(this.value.toLowerCase())
+	var files = this.files;
+	var file = files[0];
+	console.log(file)
+	url = window.URL.createObjectURL(file);
+	$(this).parents("#template").find("img").attr('src', url)
+	$(this).parents("#template").find("#filename").val(file.name);
+	$(this).parents("#template").find("#filesize").text(file.size);
+})
+</script>

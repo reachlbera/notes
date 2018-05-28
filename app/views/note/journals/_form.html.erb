@@ -37,7 +37,7 @@
     var ue = UE.getEditor('editor');
     if ("<%=params[:action]%>"=='edit') {        
         setTimeout(function(){
-        UE.getEditor('editor').setContent('<%= @journal.article.html_safe%>', true);
+        UE.getEditor('editor').setContent('<%= @journal.article.html_safe rescue nil%>', true);
       },600)
     }
 

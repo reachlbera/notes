@@ -6,7 +6,6 @@ class Note::JournalsController < ApplicationController
 
 	def index
 		p "sdf"
-		@journals = Note::Journal.all
 	end
 
 	def new
@@ -33,6 +32,17 @@ class Note::JournalsController < ApplicationController
 
 	def update
 		p params
+	end
+
+	def get_journals
+		@journals = Note::Journal.all
+		render json:@journals
+	end
+
+	def image
+		p params
+		file = params[:image]
+		p file
 	end
 
 	private

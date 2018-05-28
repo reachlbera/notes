@@ -1,5 +1,5 @@
-<div>
-	<table class="table table-hover">
+<div class="panel panel-default" id="table">
+	<table class="table table-hover hidden">
 		<thead>
 			<tr>
 				<th>创建者</th>
@@ -7,14 +7,218 @@
 				<th></th>
 			</tr>
 		</thead>
-		<tbody>
-			<% @journals.each do |journal| %>
-				<tr>
-					<td><%= journal.user_name%></td>
-					<td><%= journal.title%></td>
-					<td><%= link_to "show", note_journal_path(journal) %></td>
-				</tr>
-			<% end %>
+		<tbody id="table_body">
+			<tr v-for="item in lines">
+				<td>{{item.user_name}}</td>
+				<td>{{item.title}}</td>
+				<td><a v-bind:href="item._id.$oid">show</a></td>
+			</tr>
 		</tbody>
 	</table>
+
+	<div id="div1" class="container">
+	    <label>
+	        搜索:<input type="text" v-model="filterKey">
+	    </label>
+	    <demo-grid
+	            :data="gridData"
+	            :columns="gridColumns"
+	            :filter-Key="filterKey"
+	    >
+
+	    </demo-grid>
+	</div>
+	<!-- <a class="btn btn-default" href="/note/journals/new">new</a> -->
+	<!-- <a class="btn btn-default" href="/note/journals/new" target="_blank">new</a> -->
+	<button class="btn btn-default" onclick="location.href='new'">new</button>
 </div>
+<script type="text/x-template" id="grid-template">
+    <table class="table">
+        <thead>
+        <tr class="bg-info">
+            <th v-for="key in columns" @click="sortBy(key)" :class="{active : sortKey == key}">
+                {{key | capitalize}}
+                <span class="caret"></span>
+            </th>
+            <th>btn</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="entry in filteredData">
+            <td v-for="key in columns">
+                {{entry[key]}}
+            </td>
+            <td><a v-bind:href="'/note/journals/'+entry._id.$oid">show</a></td>            
+        </tr>
+        </tbody>
+    </table>
+</script>
+
+<script type="text/x-template" id="sort-template">
+    <table class="table">
+        <thead>
+        <tr class="bg-info">
+            <th v-for="key in columns" @click="sortBy(key)" :class="{active : sortKey == key}">
+                {{key | capitalize}}
+                <span class="caret"></span>
+            </th>
+            <th>btn</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="entry in filteredData">
+            <td v-for="key in columns">
+                {{entry[key]}}
+            </td>
+            <td><a v-bind:href="'/note/journals/'+entry._id.$oid">show</a></td>            
+        </tr>
+        </tbody>
+    </table>
+</script>
+
+<script>
+var vm_data;
+    Vue.component('demo-grid', {
+        template: '#grid-template',
+        props: {
+            data: Array,
+            columns: Array,
+            filterKey: String
+        },
+        data: function () {
+            var sortOrders = {};
+            this.columns.forEach(function (key) {
+                sortOrders[key] = 1
+            });
+            return {
+                sortKey: '',
+                sortOrders: sortOrders
+            }
+        },
+        filters: {
+            capitalize: function (value) {
+                if (!value) return '';
+                value = value.toString();
+                return value.charAt(0).toUpperCase() + value.slice(1);
+            }
+        },
+        methods: {
+            sortBy: function (key) {
+                this.sortKey = key;
+                this.sortOrders[key] = this.sortOrders[key] * -1
+            }
+        },
+        computed: {
+            filteredData: function () {
+                var data = this.data;
+                var filterKey = this.filterKey && this.filterKey.toLowerCase();
+                if (filterKey) {
+                    // data = data.filter((row) => {
+                    //     return Object.keys(row).some((key) => {
+                    //         return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+                    //     })
+                    // });
+
+                    data = data.filter(function(row){
+                        return Object.keys(row).some(function(key) {
+                          return String(row[key]).toLowerCase().indexOf(filterKey) > -1;
+                        });
+                    })
+                }
+                var sortKey = this.sortKey;
+                if (sortKey) {
+                    var order = this.sortOrders[sortKey];
+                    // data = data.slice().sort((a, b) => {
+                    //     a = a[sortKey];
+                    //     b = b[sortKey];
+                    //     return (a === b ? 0 : a > b ? 1 : -1) * order
+                    // })
+                    data = data.slice().sort(function(a,b){
+                        a = a[sortKey];
+                        b = b[sortKey];
+                        return (a === b ? 0 : a > b ? 1 : -1) * order
+                    })
+                }
+                return data;
+            }
+        }
+    });
+
+    Vue.component('demo-sort', {
+        template: '#sort-template',
+        props: {
+            data: Array,
+            columns: Array,
+            filterKey: String
+        },
+        data: function () {
+            var sortOrders = {};
+            this.columns.forEach(function (key) {
+                sortOrders[key] = 1
+            });
+            return {
+                sortKey: '',
+                sortOrders: sortOrders
+            }
+        },
+        filters: {
+            capitalize: function (value) {
+                if (!value) return '';
+                value = value.toString();
+                return value.charAt(0).toUpperCase() + value.slice(1);
+            }
+        },
+        methods: {
+            filterMethod: function(){
+            	var tableDate = this.getTableData();
+                // filter gender
+                if (Array.isArray(filters.gender)){
+                    tableData = tableData.filter(function(item){item.gender === filters.gender[0]} )
+                }
+                // filter name
+                if (Array.isArray(filters.name)){
+                    tableData = tableData.filter(function(item){filters.name.indexOf(item.name) > -1});
+                }
+                this.tableData = tableData;
+            },
+            getTableData: function(){
+            	return vm_data
+            }
+        },
+        created: function(){
+        	this.tableDate = this.getTableData()
+        }
+    });
+
+    var vm = new Vue({
+        el: '#div1',
+        data: {
+            filterKey: '',
+            gridColumns: ['user_name', 'title'],
+            gridData: []
+        }
+
+    });
+
+    var sort = new Vue({
+        el: '#div1',
+        data: {
+            filterKey: '',
+            gridColumns: ['user_name', 'title'],
+            gridData: []
+        }
+
+    });
+
+	var table = new Vue({
+		el:"#table_body",
+		data:{lines:[]}
+	})
+	$.getJSON("/note/journals/get_journals",function(data){
+		table.lines = data
+		vm.gridData = vm_data =data
+	})
+</script>
+<script type="text/javascript">
+
+</script>

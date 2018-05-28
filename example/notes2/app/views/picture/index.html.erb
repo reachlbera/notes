@@ -1,0 +1,21 @@
+<div>picture</div>
+<div class="main-data">
+	<% if @pictures %>
+	<% @pictures.each do |picture|%>
+		<div class="">
+			<div class="col-sm-3">
+				<img src="/assets/<%= picture.content_type%>/<%= picture.disk_filename%>" width="200">
+			</div>
+			<div class="col-sm-3">
+				<%= picture.id%>
+			</div>
+			<div class="col-sm-3">
+				<%= picture.content_type%>
+			</div>
+			<div class="col-sm-3">
+				<%= picture.filename%>
+			</div>
+		</div>
+	<% end %>
+	<% end %>
+</div>
