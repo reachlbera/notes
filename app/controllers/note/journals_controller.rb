@@ -41,8 +41,8 @@ class Note::JournalsController < ApplicationController
 
 	def image
 		p params
-		file = params[:image]
-		p file
+    @file_url=nil
+    p file = params.permit(:upload_file)[:upload_file]
 	end
 
 	private
