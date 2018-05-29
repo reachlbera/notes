@@ -30,6 +30,7 @@ Rails.application.routes.draw do
         get :get_journals
         get :image
         post :image
+        get :demo
       end
     end
   end
